@@ -203,30 +203,42 @@ select:focus-visible {
   text-transform: uppercase;
 }
 
+/* Difficulty and max points sit side by side */
+.setup__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 6vw, 5rem);
+}
+
 /* Reset the browser's default fieldset box */
-.setup__categories {
-  width: 100%;
+.setup__group {
   min-width: 0;
   margin: 0;
   padding: 0;
   border: none;
 }
 
-.setup__categories > legend {
+.setup__group > legend {
   margin: 0 auto;
   padding: 0 0 0.5rem;
   text-align: center;
 }
 
-/* Category checkboxes, shown as toggle chips */
-.category-list {
+.setup__categories {
+  width: 100%;
+}
+
+/* Checkboxes and radio buttons, shown as toggle chips */
+.option-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.75rem;
 }
 
-.category-option {
+.option-chip {
   display: flex;
   align-items: center;
   gap: 0.5em;
@@ -241,25 +253,25 @@ select:focus-visible {
   transition: background 0.15s, color 0.15s;
 }
 
-.category-option:hover {
+.option-chip:hover {
   background: #fff4cc;
 }
 
-.category-option:has(input:checked) {
+.option-chip:has(input:checked) {
   background: var(--color-tile);
   color: var(--color-light-text);
 }
 
-.category-option:has(input:checked):hover {
+.option-chip:has(input:checked):hover {
   background: var(--color-tile-hover);
 }
 
-.category-option:has(input:focus-visible) {
+.option-chip:has(input:focus-visible) {
   outline: 4px solid var(--color-border);
   outline-offset: 3px;
 }
 
-.category-option input {
+.option-chip input {
   width: 1.1em;
   height: 1.1em;
   margin: 0;

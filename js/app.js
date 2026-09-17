@@ -10,6 +10,7 @@ const categoryList = document.getElementById("category-list");
 const setupError = document.getElementById("setup-error");
 const maxDifficultySelect = document.getElementById("max-difficulty");
 const startButton = document.getElementById("start-button");
+const poolOptions = document.getElementById("pool-options");
 
 // Board screen
 const boardElement = document.getElementById("board");
@@ -28,7 +29,7 @@ const backToBoardButton = document.getElementById("back-to-board-button");
 
 // ===== 2. Game state =====
 
-const POINTS_PER_LEVEL = 100;
+const POINTS_PER_LEVEL = 200;
 
 let currentBoard = [];
 
@@ -73,7 +74,7 @@ function renderCategoryOptions() {
 
     for (const category of QUESTION_BANK.categories) {
         const label = document.createElement("label");
-        label.className = "category-option";
+        label.className = "option-chip";
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -95,6 +96,11 @@ function getSelectedCategories() {
     return QUESTION_BANK.categories.filter((category) => checkedIds.includes(category.id));
 }
 
+function getSelectedPool() {
+    const checkedRadio = poolOptions.querySelector("input:checked");
+    return QUESTION_BANK.pools[checkedRadio.value];
+}
+
 function startGame() {
     const categories = getSelectedCategories();
     const maxLevel = Number(maxDifficultySelect.value);
@@ -106,20 +112,19 @@ function startGame() {
 
     setupError.hidden = true;
 
-    currentBoard = generateBoard(categories, maxLevel);
+    currentBoard = generateBoard(getSelectedPool(), categories, maxLevel);
     renderBoard();
     showScreen(boardScreen);
 }
 
 // ===== 5. Board =====
 
-// Pick random categories, then one random question
-function generateBoard(categories, maxLevel) {
+function generateBoard(questionPool, categories, maxLevel) {
     return categories.map((category) => {
         const tiles = [];
 
         for (let level = 1; level <= maxLevel; level ++) {
-            const pool = QUESTION_BANK.questions.filter(
+            const pool = questionPool.filter(
                 (question) => question.category === category.id && question.difficulty === level
             );
 

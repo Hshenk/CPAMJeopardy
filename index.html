@@ -13,27 +13,44 @@
       <h1 class="title__game">Jeopardy</h1>
     </header>
 
-    <!-- Setup screen: pick categories and max difficulty, then start -->
+    <!-- Setup screen: pick question set, max points and categories, then start -->
     <section id="setup-screen" class="screen setup">
       <h2 class="banner">New Game</h2>
 
       <div class="setup__fields">
-        <fieldset class="setup__field setup__categories">
+        <div class="setup__row">
+          <fieldset class="setup__field setup__group">
+            <legend>Difficulty</legend>
+            <!-- value matches a key in QUESTION_BANK.pools -->
+            <div id="pool-options" class="option-list">
+              <label class="option-chip">
+                <input type="radio" name="question-pool" value="easy" checked>
+                <span>Easy</span>
+              </label>
+              <label class="option-chip">
+                <input type="radio" name="question-pool" value="hard">
+                <span>Hard</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="setup__field">
+            <label for="max-difficulty">Max points</label>
+            <select id="max-difficulty">
+              <option value="1">200</option>
+              <option value="2">400</option>
+              <option value="3" selected>600</option>
+              <option value="4">800</option>
+              <option value="5">1000</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="setup__field setup__group setup__categories">
           <legend>Categories</legend>
           <!-- One checkbox per category, built by JS from QUESTION_BANK -->
-          <div id="category-list" class="category-list"></div>
+          <div id="category-list" class="option-list"></div>
         </fieldset>
-
-        <div class="setup__field">
-          <label for="max-difficulty">Max difficulty</label>
-          <select id="max-difficulty">
-            <option value="1">100</option>
-            <option value="2">200</option>
-            <option value="3" selected>300</option>
-            <option value="4">400</option>
-            <option value="5">500</option>
-          </select>
-        </div>
       </div>
 
       <p id="setup-error" class="setup__error" hidden>Pick at least one category.</p>
