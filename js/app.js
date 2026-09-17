@@ -6,7 +6,8 @@ const boardScreen = document.getElementById("board-screen");
 const questionScreen = document.getElementById("question-screen");
 
 // Setup screen
-const categoryCountSelect = document.getElementById("category-count");
+const categoryList = document.getElementById("category-list");
+const setupError = document.getElementById("setup-error");
 const maxDifficultySelect = document.getElementById("max-difficulty");
 const startButton = document.getElementById("start-button");
 
@@ -66,28 +67,46 @@ function pickRandom(items) {
 
 // ===== 4. Setup screen =====
 
-// Fill the "number of categories" dropdown 
-function populateCategoryCountOptions() {
-    const totalCategories = QUESTION_BANK.categories.length;
+// Build one checkbox per category
+function renderCategoryOptions() {
+    categoryList.innerHTML = "";
 
-    categoryCountSelect.innerHTML = "";
+    for (const category of QUESTION_BANK.categories) {
+        const label = document.createElement("label");
+        label.className = "category-option";
 
-    for (let count = 1; count <= totalCategories; count++) {
-        const option = document.createElement("option");
-        option.value = count;
-        option.textContent = count;
-        categoryCountSelect.append(option);
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = category.id;
+        checkbox.checked = true;
+
+        const name = document.createElement("span");
+        name.textContent = category.name;
+
+        label.append(checkbox, name);
+        categoryList.append(label);
     }
+}
 
-    // Default to using every category
-    categoryCountSelect.value = totalCategories;
+function getSelectedCategories() {
+    const checkedBoxes = categoryList.querySelectorAll("input:checked");
+    const checkedIds = [...checkedBoxes].map((checkbox) => checkbox.value);
+
+    return QUESTION_BANK.categories.filter((category) => checkedIds.includes(category.id));
 }
 
 function startGame() {
-    const categoryCount = Number(categoryCountSelect.value);
+    const categories = getSelectedCategories();
     const maxLevel = Number(maxDifficultySelect.value);
 
-    currentBoard = generateBoard(categoryCount, maxLevel);
+    if (categories.length === 0) {
+        setupError.hidden = false;
+        return;
+    }
+
+    setupError.hidden = true;
+
+    currentBoard = generateBoard(categories, maxLevel);
     renderBoard();
     showScreen(boardScreen);
 }
@@ -95,10 +114,8 @@ function startGame() {
 // ===== 5. Board =====
 
 // Pick random categories, then one random question
-function generateBoard(categoryCount, maxLevel) {
-    const chosenCategories = shuffle(QUESTION_BANK.categories).slice(0, categoryCount);
-
-    return chosenCategories.map((category) => {
+function generateBoard(categories, maxLevel) {
+    return categories.map((category) => {
         const tiles = [];
 
         for (let level = 1; level <= maxLevel; level ++) {
@@ -216,6 +233,10 @@ startButton.addEventListener("click", startGame);
 newBoardButton.addEventListener("click", () => showScreen(setupScreen));
 showAnswerButton.addEventListener("click", showAnswer);
 backToBoardButton.addEventListener("click", returnToBoard);
+categoryList.addEventListener("change", () => {
+    setupError.hidden = true;
+});
 
-populateCategoryCountOptions();
+
+renderCategoryOptions();
 showScreen(setupScreen);
