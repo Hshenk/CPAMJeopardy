@@ -1,0 +1,375 @@
+/* ==========================================================================
+   Font
+   Uses Ballpoint if it's installed or if a font file is placed in /fonts.
+   Otherwise falls back to a handwritten-style system font.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Ballpoint";
+  src: local("Ballpoint"),
+       url("../fonts/Ballpoint.woff2") format("woff2"),
+       url("../fonts/Ballpoint.ttf") format("truetype");
+  font-display: swap;
+}
+
+/* ==========================================================================
+   Theme
+   ========================================================================== */
+
+:root {
+  --color-sky: #0288d1;
+  --color-panel: #ffd236;
+  --color-border: #e00000;
+  --color-tile: #0288d1;
+  --color-tile-hover: #1aa3ea;
+  --color-card: #ffffff;
+  --color-text: #111111;
+  --color-light-text: #ffffff;
+  --color-answer: #d40000;
+
+  --font-display: "Ballpoint", "Segoe Print", "Comic Sans MS", "Chalkboard SE", cursive;
+  --font-body: var(--font-display);
+
+  --page-padding: clamp(0.75rem, min(2.5vw, 3vh), 2rem);
+  --panel-radius: 48px;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Make sure the hidden attribute always wins over display rules below */
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: var(--page-padding);
+  background: var(--color-sky);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+button,
+select {
+  font-family: inherit;
+}
+
+.button:focus-visible,
+.tile:focus-visible,
+select:focus-visible {
+  outline: 4px solid var(--color-border);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Panel and title
+   ========================================================================== */
+
+.panel {
+  width: 100%;
+  max-width: 1400px;
+  min-height: calc(100vh - 2 * var(--page-padding));
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.75rem, min(3vw, 4vh), 2.5rem) clamp(1rem, 5vw, 4.5rem);
+  background: var(--color-panel);
+  border: clamp(6px, 0.8vw, 12px) solid var(--color-border);
+  border-radius: var(--panel-radius);
+}
+
+.title {
+  margin-bottom: clamp(0.5rem, 3vh, 2.5rem);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.title__museum {
+  margin: 0;
+  font-size: clamp(1rem, min(2.4vw, 3.6vh), 1.9rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.title__game {
+  margin: 0;
+  font-size: clamp(2.25rem, min(8vw, 11vh), 6rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+
+/* ==========================================================================
+   Shared screen pieces
+   ========================================================================== */
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.banner {
+  margin: 0;
+  padding: 0.3em 1.2em;
+  background: var(--color-tile);
+  color: var(--color-light-text);
+  font-size: clamp(1.2rem, 2.6vw, 2rem);
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.screen-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: clamp(0.5rem, 2.5vh, 2rem);
+}
+
+.button {
+  padding: 0.5em 1.4em;
+  border: none;
+  border-radius: 10px;
+  background: var(--color-tile);
+  color: var(--color-light-text);
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.button:hover {
+  background: var(--color-tile-hover);
+}
+
+.button:active {
+  transform: translateY(2px);
+}
+
+.button--secondary {
+  background: var(--color-card);
+  color: var(--color-text);
+}
+
+.button--secondary:hover {
+  background: #fff4cc;
+}
+
+/* ==========================================================================
+   Setup screen
+   ========================================================================== */
+
+.setup {
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.25rem, 4vh, 2.5rem);
+}
+
+.setup__fields {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1.25rem, 5vw, 4rem);
+}
+
+.setup__field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.setup__field label {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  text-transform: uppercase;
+}
+
+.setup__field select {
+  min-width: 8ch;
+  padding: 0.25em 0.6em;
+  border: none;
+  border-radius: 8px;
+  background: var(--color-card);
+  color: var(--color-text);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  text-align: center;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Board
+   JS sets --category-count on #board so the grid matches the board size.
+   ========================================================================== */
+
+.board {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--category-count, 3), minmax(0, 1fr));
+  column-gap: clamp(0.75rem, 5vw, 7.5rem);
+  min-height: 0;
+}
+
+.category-column {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 1.4vh, 1rem);
+  min-width: 0;
+}
+
+.category-header {
+  margin-bottom: clamp(0.25rem, 1vh, 0.75rem);
+  padding: 0.3em 0.4em;
+  background: var(--color-tile);
+  color: var(--color-light-text);
+  font-size: clamp(1rem, min(2.2vw, 3.4vh), 1.8rem);
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.tile {
+  flex: 1;
+  min-height: 2.5rem;
+  padding: 0;
+  border: none;
+  background: var(--color-tile);
+  color: var(--color-text);
+  font-size: clamp(1.5rem, min(6vw, 6.5vh), 5rem);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.tile:hover:not(:disabled) {
+  background: var(--color-tile-hover);
+  transform: scale(1.02);
+}
+
+/* A tile whose question has already been opened */
+.tile--used {
+  background: rgba(2, 136, 209, 0.25);
+  color: rgba(0, 0, 0, 0.2);
+  cursor: default;
+}
+
+/* A tile with no question available at that difficulty */
+.tile--empty {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(2, 136, 209, 0.25) 0 12px,
+    rgba(2, 136, 209, 0.1) 12px 24px
+  );
+  color: rgba(0, 0, 0, 0.35);
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Question screen
+   ========================================================================== */
+
+/* On the question screen, drop the big JEOPARDY heading to make room */
+.panel:has(#question-screen:not([hidden])) .title__game {
+  display: none;
+}
+
+.question {
+  align-items: center;
+}
+
+.question__card {
+  flex: 1;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vh, 1.5rem);
+  padding: clamp(0.75rem, min(4vw, 4vh), 3rem);
+  background: var(--color-card);
+  border-radius: 24px;
+  text-align: center;
+}
+
+.question__label {
+  margin: 0;
+  font-size: clamp(1.2rem, min(3.2vw, 4.5vh), 2.6rem);
+  font-weight: normal;
+  line-height: 1.15;
+  text-decoration: underline;
+  text-transform: uppercase;
+  text-underline-offset: 0.15em;
+}
+
+.question__text {
+  max-width: 36ch;
+  margin: 0;
+  font-size: clamp(1.2rem, min(3vw, 4.2vh), 2.75rem);
+  line-height: 1.2;
+}
+
+.question__image {
+  max-width: 100%;
+  max-height: 30vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.question__choices {
+  margin: 0;
+  padding-left: 2.2em;
+  font-size: clamp(1.1rem, min(2.6vw, 3.6vh), 2rem);
+  line-height: 1.2;
+  text-align: left;
+}
+
+.answer {
+  width: 100%;
+  padding-top: clamp(0.5rem, 1.5vh, 1rem);
+  border-top: 4px dashed var(--color-tile);
+}
+
+.answer__label {
+  margin: 0;
+  font-size: clamp(0.9rem, min(1.8vw, 2.6vh), 1.4rem);
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.answer__text {
+  margin: 0;
+  color: var(--color-answer);
+  font-size: clamp(1.3rem, min(3.6vw, 5vh), 3rem);
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Small screens
+   ========================================================================== */
+
+@media (max-width: 600px) {
+  :root {
+    --panel-radius: 24px;
+  }
+
+  .board {
+    column-gap: 0.5rem;
+  }
+}
