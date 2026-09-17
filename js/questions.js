@@ -276,7 +276,7 @@ const QUESTION_BANK = {
     {
       category: "helicopters",
       difficulty: 2,
-      question: "How many wings does the Berliner Triwing have?",
+      question: "How many wings does the Berliner helicopter have?",
       answer: "Three",
     },
     {

@@ -13,16 +13,16 @@
       <h1 class="title__game">Jeopardy</h1>
     </header>
 
-    <!-- Setup screen: pick the board size, then start -->
+    <!-- Setup screen: pick categories and max difficulty, then start -->
     <section id="setup-screen" class="screen setup">
       <h2 class="banner">New Game</h2>
 
       <div class="setup__fields">
-        <div class="setup__field">
-          <label for="category-count">Number of categories</label>
-          <!-- Options are filled in by JS based on how many categories exist -->
-          <select id="category-count"></select>
-        </div>
+        <fieldset class="setup__field setup__categories">
+          <legend>Categories</legend>
+          <!-- One checkbox per category, built by JS from QUESTION_BANK -->
+          <div id="category-list" class="category-list"></div>
+        </fieldset>
 
         <div class="setup__field">
           <label for="max-difficulty">Max difficulty</label>
@@ -35,6 +35,8 @@
           </select>
         </div>
       </div>
+
+      <p id="setup-error" class="setup__error" hidden>Pick at least one category.</p>
 
       <button id="start-button" class="button" type="button">Start Game</button>
     </section>
