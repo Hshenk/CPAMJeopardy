@@ -379,7 +379,7 @@ const QUESTION_BANK = {
         category: "vertical-lift",
         difficulty: 3,
         question: "Helicopters use tail rotors to generate rotational force for this purpose.",
-        answer: "How to counter the spinning force of the main rotor blades and to turn?",
+        answer: "How to counter the spinning force of the main rotor blades or to turn?",
       },
       {
         category: "vertical-lift",

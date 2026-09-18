@@ -108,7 +108,7 @@ select:focus-visible {
 
 .title__game {
   margin: 0;
-  font-size: clamp(2.25rem, min(8vw, 11vh), 6rem);
+  font-size: clamp(4.25rem, min(8vw, 11vh), 6rem);
   line-height: 1;
   letter-spacing: 0.03em;
 }
